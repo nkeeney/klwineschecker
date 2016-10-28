@@ -24,8 +24,11 @@ app.get('/', function(request, response) {
 		// str is a bit batch of HTML.
 		
 		// strip everything before <div class="results-block clearfix"> until <div class="page-filters-block clearfix">
-		str = str.subtring(str.indexOf("results-block clearfix"), str.indexOf("page-filters-block clearfix"));
-		
+		if (str && str.substring) {
+			str = str.subtring(str.indexOf("results-block clearfix"), str.indexOf("page-filters-block clearfix"));
+		} else {
+			str = "Error: response not a string!: " + str;
+		}
 		response.send(str);
 	  });
 	}).end();
