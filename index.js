@@ -25,7 +25,7 @@ app.get('/', function(request, response) {
 		try {
 			// strip everything before <div class="results-block clearfix"> until <div class="page-filters-block clearfix">
 			if (str && str.substring) {
-				str = str.substring(str.indexOf("results-block clearfix"), str.indexOf("page-filters-block clearfix"));
+				str = str.substring(str.indexOf("results-block clearfix"), str.indexOf("function IncludeOutOfStock"));
 			} else {
 				str = "Error: response not a string!: " + str;
 			}
