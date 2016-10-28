@@ -44,7 +44,7 @@ app.get('/db', function (request, response) {
 
 function saveToDB(blob) {
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-    client.query('UPDATE result_table SET text = ?1', blob, function(err, result) {
+    client.query('UPDATE result_table SET text = $1', [blob], function(err, result) {
       done();
       if (err)
        { console.error(err); }
