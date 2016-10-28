@@ -22,12 +22,15 @@ app.get('/', function(request, response) {
 	  //the whole response has been recieved, so we just print it out here
 	  resp.on('end', function () {
 		// str is a bit batch of HTML.
-		
-		// strip everything before <div class="results-block clearfix"> until <div class="page-filters-block clearfix">
-		if (str && str.substring) {
-			str = str.subtring(str.indexOf("results-block clearfix"), str.indexOf("page-filters-block clearfix"));
-		} else {
-			str = "Error: response not a string!: " + str;
+		try {
+			// strip everything before <div class="results-block clearfix"> until <div class="page-filters-block clearfix">
+			if (str && str.substring) {
+				str = str.subtring(str.indexOf("results-block clearfix"), str.indexOf("page-filters-block clearfix"));
+			} else {
+				str = "Error: response not a string!: " + str;
+			}
+		} catch (err) {
+			str = "ERROR! " + err + ": " + err.message;
 		}
 		response.send(str);
 	  });
