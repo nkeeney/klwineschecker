@@ -47,9 +47,7 @@ function saveToDB(blob) {
     client.query('UPDATE result_table SET text = "' + blob + '"', function(err, result) {
       done();
       if (err)
-       { console.error(err); response.send("Error " + err); }
-      else
-       { response.send(result.rows); }
+       { console.error(err); }
     });
   });
 }
@@ -87,6 +85,9 @@ app.get('/', function(request, response) {
 			// strip everything before <div class="results-block clearfix"> until <div class="page-filters-block clearfix">
 			if (str && str.substring) {
 				str = str.substring(str.indexOf("results-block clearfix"), str.indexOf("function IncludeOutOfStock"));
+				
+				// strip tags
+				str = str.replace(/<(?:.|\n)*?>/gm, '');
 				
 				saveToDB(str);
 			} else {
