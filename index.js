@@ -20,7 +20,7 @@ app.get('/dbsetup', function (request, response) {
 
 app.get('/dbinit', function (request, response) {
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-    client.query('INSERT INTO result_table VALUES (1, '')', function(err, result) {
+    client.query('INSERT INTO result_table VALUES (1, "")', function(err, result) {
       done();
       if (err)
        { console.error(err); response.send("Error " + err); }
@@ -42,9 +42,9 @@ app.get('/db', function (request, response) {
   });
 });
 
-function saveToDB(result) {
+function saveToDB(blob) {
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-    client.query('UPDATE result_table SET text = "' + result + '"', function(err, result) {
+    client.query('UPDATE result_table SET text = "' + blob + '"', function(err, result) {
       done();
       if (err)
        { console.error(err); response.send("Error " + err); }
