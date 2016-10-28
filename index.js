@@ -23,7 +23,10 @@ app.get('/', function(request, response) {
 	  resp.on('end', function () {
 		// str is a bit batch of HTML.
 		
-		response.send('Hello World: ' + str);
+		// strip everything before <div class="results-block clearfix"> until <div class="page-filters-block clearfix">
+		str = str.subtring(str.indexOf("<div class=\"results-block clearfix\">"), str.indexOf("<div class=\"page-filters-block clearfix\">"));
+		
+		response.send(str);
 	  });
 	}).end();
 })
