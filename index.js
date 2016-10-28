@@ -18,6 +18,18 @@ app.get('/dbsetup', function (request, response) {
   });
 });
 
+app.get('/dbinit', function (request, response) {
+  pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+    client.query('INSERT INTO result_table VALUES (1, '')', function(err, result) {
+      done();
+      if (err)
+       { console.error(err); response.send("Error " + err); }
+      else
+       { response.send(result); }
+    });
+  });
+});
+
 app.get('/db', function (request, response) {
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
     client.query('SELECT * FROM result_table', function(err, result) {
@@ -29,6 +41,30 @@ app.get('/db', function (request, response) {
     });
   });
 });
+
+function saveToDB(result) {
+  pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+    client.query('UPDATE result_table SET text = "' + result + '"', function(err, result) {
+      done();
+      if (err)
+       { console.error(err); response.send("Error " + err); }
+      else
+       { response.send(result.rows); }
+    });
+  });
+}
+
+function getFromDB() {
+  pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+    client.query('SELECT * FROM result_table WHERE id = 1', function(err, result) {
+      done();
+      if (err)
+       { console.error(err); response.send("Error " + err); }
+      else
+       { response.send(result.rows); }
+    });
+  });
+}
 
 var options = {
   host: 'www.klwines.com',
@@ -51,6 +87,8 @@ app.get('/', function(request, response) {
 			// strip everything before <div class="results-block clearfix"> until <div class="page-filters-block clearfix">
 			if (str && str.substring) {
 				str = str.substring(str.indexOf("results-block clearfix"), str.indexOf("function IncludeOutOfStock"));
+				
+				saveToDB(str);
 			} else {
 				str = "Error: response not a string!: " + str;
 			}
